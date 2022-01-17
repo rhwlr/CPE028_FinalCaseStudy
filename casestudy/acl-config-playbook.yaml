@@ -1,0 +1,31 @@
+--- 
+- name: ACL Configuration for R1 (For Faculty Only)
+  hosts: R1 
+  gather_facts: false 
+  connection: local 
+ 
+  tasks: 
+    - name: R1 Access List comman
+      ios_command: 
+        commands: 
+          - configure terminal 
+          - access-list 100 permit tcp 192.168.10.0 0.0.0.255 192.168.10.3 0.0.0.0 
+          - access-list 100 permit udp 192.168.10.0 0.0.0.255 192.168.10.3 0.0.0.255 
+      register: acl 
+ 
+     
+- name: ACL Configuration for R2 (For Students and Faculty)
+  hosts: R2 
+  gather_facts: false 
+  connection: local 
+ 
+  tasks: 
+    - name: R2 Access List command
+      ios_command: 
+        commands: 
+          - configure terminal 
+          - access-list 101 permit tcp 192.168.10.0 0.0.0.255 192.168.10.3 0.0.0.0 
+          - access-list 101 permit udp 192.168.10.0 0.0.0.255 192.168.10.3 0.0.0.255
+          - access-list 101 permit tcp 192.168.20.0 0.0.0.255 192.168.20.3 0.0.0.0 
+          - access-list 101 permit udp 192.168.20.0 0.0.0.255 192.168.20.3 0.0.0.255 
+      register: acl
